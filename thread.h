@@ -70,7 +70,9 @@ int pthread_key_create(pthread_key_t *key, void (*destr_function) (void *));
 int pthread_key_delete(pthread_key_t key);
 int pthread_setspecific(pthread_key_t key, const void *pointer);
 void * pthread_getspecific(pthread_key_t key);
-
+int pthread_cond_init(pthread_cond_t *cond, const void *unused_attr);
+int pthread_cond_signal(pthread_cond_t *cond);
+DWORD pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
 #define sleep(num) Sleep(1000*(num))
 
 #ifdef __cplusplus

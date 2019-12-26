@@ -150,4 +150,24 @@ void * pthread_getspecific(pthread_key_t key)
 	return TlsGetValue(key);
 }
 
+int pthread_cond_init(pthread_cond_t *cond, const void *unused_attr) {
+    HANDLE handle= CreateEventA(NULL, FALSE, FALSE, NULL);
+    if (handle != NULL) {
+        cond->handle = handle;
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+
+int pthread_cond_signal(pthread_cond_t *cond) {
+    return SetEvent(cond->handle);
+}
+
+DWORD pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex) {
+    ReleaseMutex(mutex->handle);
+    WaitForSingleObject(cond->handle, INFINITE);
+    return pthread_mutex_lock(mutex);
+}
 #endif
